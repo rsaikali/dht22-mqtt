@@ -14,5 +14,5 @@ jobs:
           imageName: rsaikali/dht22-mqtt
           platform: linux/arm/v7
           dockerHubUser: ${{ secrets.DOCKER_HUB_LOGIN }}
-          dockerHubPassword: '${{ secrets.DOCKER_HUB_PASSWORD }}'
+          dockerHubPassword: '"${{ secrets.DOCKER_HUB_PASSWORD }}"'
           publish: true
