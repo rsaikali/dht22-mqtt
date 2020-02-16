@@ -1,5 +1,5 @@
 .git
 .gitignore
+.github
 .dockerignore
 Dockerfile
-docker_build.sh
