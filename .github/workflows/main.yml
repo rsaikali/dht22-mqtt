@@ -9,12 +9,11 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v1
-      -
-        name: Set up Docker Buildx
-        run: |
-          export DOCKER_CLI_EXPERIMENTAL=enabled
-          docker buildx create --use --name build --node build --driver-opt network=host
-      -
-        name: Run Buildx
-        run: |
-          docker buildx build --platform linux/arm/v7 -t rsaikali/dht22-mqtt .
+      - name: Docker multi-arch buildx
+        uses: ilteoood/docker_buildx@v1.0.1
+        with:
+          imageName: rsaikali/dht22-mqtt
+          publish: true
+          platform: linux/arm/v7
+          dockerHubUser: rsaikali
+          dockerHubPassword: foobarfoobar
