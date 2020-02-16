@@ -36,7 +36,7 @@ apt-get install --no-install-recommends -y libgpiod2 gcc build-essential
 Install Python requirements:
 
 ```sh
-pip3 install --no-cache-dir -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Configure through environment variables (those are default values if nothing given):
