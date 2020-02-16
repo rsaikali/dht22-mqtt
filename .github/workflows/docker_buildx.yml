@@ -16,3 +16,10 @@ jobs:
           dockerHubUser: ${{ secrets.DOCKER_HUB_LOGIN }}
           dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
           publish: true
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2.1.0
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_HUB_LOGIN }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          DOCKERHUB_REPOSITORY: rsaikali/dht22-mqtt
+
