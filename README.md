@@ -1,5 +1,6 @@
 # dht22-mqtt
 
+![PEP8](https://github.com/rsaikali/dht22-mqtt/workflows/PEP8/badge.svg)
 ![Docker](https://github.com/rsaikali/dht22-mqtt/workflows/Docker/badge.svg)
 
 `dht22-mqtt` is a Python script to get temperature and humidity measures published to a MQTT (message queue) broker.
