@@ -1,5 +1,7 @@
 # dht22-mqtt
 
+![Docker](https://github.com/rsaikali/dht22-mqtt/workflows/Docker/badge.svg)
+
 `dht22-mqtt` is a Python script to get temperature and humidity measures published to a MQTT (message queue) broker.
 Temperature and humidity are retrieved through a DHT22 sensor (connected to RaspberryPi GPIO in my case).
 
