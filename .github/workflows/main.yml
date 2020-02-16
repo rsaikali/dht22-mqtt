@@ -1,9 +1,9 @@
-name: Docker Buildx
+name: Docker
 
 on: [push]
 
 jobs:
-  docker:
+  buildx:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
