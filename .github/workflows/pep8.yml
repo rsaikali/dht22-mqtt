@@ -1,0 +1,15 @@
+name: PEP8
+
+on: [push]
+
+jobs:
+  pep8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: autopep8
+        uses: peter-evans/autopep8@v1.2.0
+        with:
+          # Arguments to pass to autopep8
+          args: # default is --help
