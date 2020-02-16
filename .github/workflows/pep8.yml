@@ -9,6 +9,17 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@master
       - name: autopep8
-        uses: peter-evans/autopep8@v1.2.0
+        uses: peter-evans/autopep8@master
         with:
-          args: --max-line-length=160
+          args: --max-line-length=160 .
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: autopep8 action fixes
+          committer: Roland SAIKALI <roland@saikali.fr>
+          title: Fixes by autopep8 action
+          body: This is an auto-generated PR with fixes by autopep8.
+          labels: autopep8
+          reviewers: rsaikali
+          branch: autopep8-patches
