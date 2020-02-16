@@ -12,8 +12,9 @@ jobs:
       -
         name: Set up Docker Buildx
         run: |
-          docker buildx create --use --name armbuild --node build --driver-opt network=host
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          docker buildx create --use --name build --node build --driver-opt network=host
       -
         name: Run Buildx
         run: |
-          docker buildx armbuild --platform linux/arm/v7 -t rsaikali/dht22-mqtt .
+          docker buildx build --platform linux/arm/v7 -t rsaikali/dht22-mqtt .
