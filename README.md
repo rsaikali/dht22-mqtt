@@ -81,21 +81,21 @@ An image is available on Docker Hub: [rsaikali/dht22-mqtt](https://hub.docker.co
 
 Needed environment is obviously the same as the standalone script mechanism, described in the Dockerfile:
 
-Please note that you'll need to use `--privileged` when runnong docker to have access to GPIO.
+Please note that you'll need to use `--privileged` when running Docker to have access to GPIO.
 
 ```sh
 docker run --name dht22-mqtt \
-        --privileged \
-        --restart=always \
-        --net=host \
-        -tid \
-        -e DHT22_PIN=4 \
-        -e DHT22_CHECK_EVERY=10 \
-        -e MQTT_SERVICE_HOST=mosquitto.local \
-        -e MQTT_SERVICE_PORT=1883 \
-        -e MQTT_SERVICE_TOPIC=home/livingroom \
-        -e MQTT_CLIENT_ID=dht22-mqtt-service \
-        rsaikali/dht22-mqtt
+           --privileged \
+           --restart=always \
+           --net=host \
+           -tid \
+           -e DHT22_PIN=4 \
+           -e DHT22_CHECK_EVERY=10 \
+           -e MQTT_SERVICE_HOST=mosquitto.local \
+           -e MQTT_SERVICE_PORT=1883 \
+           -e MQTT_SERVICE_TOPIC=home/livingroom \
+           -e MQTT_CLIENT_ID=dht22-mqtt-service \
+           rsaikali/dht22-mqtt
 ```
 
 #### Build your own Docker image
