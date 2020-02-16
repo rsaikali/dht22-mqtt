@@ -11,5 +11,4 @@ jobs:
       - name: autopep8
         uses: peter-evans/autopep8@v1.2.0
         with:
-          # Arguments to pass to autopep8
-          args: # default is --help
+          args: --max-line-length=160
