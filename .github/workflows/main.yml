@@ -10,7 +10,7 @@ jobs:
         name: Checkout
         uses: actions/checkout@v1
       - name: Docker multi-arch buildx
-        uses: ilteoood/docker_buildx@v1.0.1
+        uses: zmingxie/docker_buildx@v1.1
         with:
           imageName: rsaikali/dht22-mqtt
           publish: true
