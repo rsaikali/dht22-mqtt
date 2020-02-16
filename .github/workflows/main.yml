@@ -1,4 +1,4 @@
-name: buildx
+name: Docker Buildx
 
 on: [push]
 
@@ -6,11 +6,13 @@ jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
-      - name: Customizable Docker Buildx
-        uses: ilteoood/docker_buildx@v1.0.1
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Docker Buildx and publish
+        uses: ilteoood/docker_buildx@master
         with:
           imageName: rsaikali/dht22-mqtt
-          publish: true
           platform: linux/arm/v7
           dockerHubUser: ${{ secrets.DOCKER_HUB_LOGIN }}
           dockerHubPassword: '${{ secrets.DOCKER_HUB_PASSWORD }}'
+          publish: true
