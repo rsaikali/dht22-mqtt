@@ -33,6 +33,13 @@ apt-get update
 apt-get install --no-install-recommends -y libgpiod2 gcc build-essential
 ```
 
+Git clone the project:
+
+```sh
+git clone https://github.com/rsaikali/dht22-mqtt.git
+cd dht22-mqtt
+```
+
 Install Python requirements:
 
 ```sh
@@ -108,4 +115,34 @@ You'll basically need to activate experimental features and use `buildx`.
 export DOCKER_CLI_EXPERIMENTAL=enabled
 docker buildx create --use --name build --node build --driver-opt network=host
 docker buildx build --platform linux/arm/v7 -t <your-repo>/dht22-mqtt --push .
+```
+
+## Known issues
+
+DHT22 sensor is not extremely reliable, you'll sometimes find errors in log, those are not a big deal, as it will retry by itself.
+
+```
+2020-02-16 11:05:00 [dht22-mqtt-5b55c98558-wz6f9] [+] [home/salon/temperature] --- 22.7°C ---> [mqtt.iot.svc.cluster.local:1883]
+2020-02-16 11:05:00 [dht22-mqtt-5b55c98558-wz6f9] [+] [home/salon/humidity] ------ 56.6% ----> [mqtt.iot.svc.cluster.local:1883]
+2020-02-16 11:05:10 [dht22-mqtt-5b55c98558-wz6f9] [-] An error occured while getting DHT22 measure
+2020-02-16 11:05:10 [dht22-mqtt-5b55c98558-wz6f9] [-] Checksum did not validate. Try again.
+2020-02-16 11:05:20 [dht22-mqtt-5b55c98558-wz6f9] [+] [home/salon/temperature] --- 22.9°C ---> [mqtt.iot.svc.cluster.local:1883]
+2020-02-16 11:05:20 [dht22-mqtt-5b55c98558-wz6f9] [+] [home/salon/humidity] ------ 56.8% ----> [mqtt.iot.svc.cluster.local:1883]
+```
+
+When running, a required library may take 100% CPU or return bad reading, those are known bugs with issues in progress:
+
+* [adafruit/Adafruit_Blinka: 100% CPU use of libgpiod_pulsein on Raspberry Pi](https://github.com/adafruit/Adafruit_Blinka/issues/210)
+* [adafruit/Adafruit_CircuitPython_DHT: Improve error handling](https://github.com/adafruit/Adafruit_CircuitPython_DHT/pull/31)
+
+```
+top - 14:28:21 up 12:27,  1 user,  load average: 2.00, 2.03, 2.03
+Tasks: 130 total,   3 running, 127 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  9.0 us, 18.0 sy,  0.0 ni, 72.9 id,  0.0 wa,  0.0 hi,  0.1 si,  0.0 st
+MiB Mem :   3854.5 total,   3134.0 free,    222.5 used,    498.0 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.   3521.4 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+11407 root      rt   0    1496    340    284 R 100.0   0.0  43:56.08 libgpiod_pulsei
+    9 root      20   0       0      0      0 S   0.4   0.0   0:02.95 ksoftirqd/0
 ```
