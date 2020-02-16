@@ -6,24 +6,27 @@
 `dht22-mqtt` is a Python script to get temperature and humidity measures published to a MQTT (message queue) broker.
 Temperature and humidity are retrieved through a DHT22 sensor (connected to RaspberryPi GPIO in my case).
 
-Measurements are retrieved using the given GPIO pin, and published into configure MQTT broker given the topic, host and port you have configured.
+Measurements are retrieved using the given GPIO pin, and published into MQTT broker given the topic, host and port you have configured.
 
 ## Hardware needed
 
-You'll need a DHT22 temperature and humidity sensor attached to your RaspberryPi.
-Many examples are available on Google on how to plug the sensor to GPIO pins.
+This project needs a DHT22 temperature and humidity sensor connected to a RaspberryPi.
+Many examples are available on Google on how to plug the sensor to RaspberryPi GPIO pins.
 
-<p align="center"><img src="https://img3.bgxcdn.com/thumb/large/2014/xiemeijuan/07/SKU146979/SKU146979a.jpg" width="200" height="200"></p>
+<p align="center">
+    <img src="https://img3.bgxcdn.com/thumb/large/2014/xiemeijuan/07/SKU146979/SKU146979a.jpg" width="200" height="200">
+    <img src="https://www.elektor.fr/media/catalog/product/cache/2b4bee73c90e4689bbc4ca8391937af9/r/a/raspberry-pi-4-4gb.jpg" width="200" height="200">
+</p>
 
 Please note that I'll use the GPIO pin 4 in the following chapters.
 
 ## How to use it?
 
-`dht22-mqtt` can be used as a standalone Python script or a Docker container.
+`dht22-mqtt` can be used as a standalone Python script or as a Docker container.
 
 ### Use as a standalone script
 
-Install Linux requirements:
+Install Linux requirements on RaspberryPi:
 
 ```sh
 apt-get update
@@ -101,6 +104,5 @@ You'll basically need to activate experimental features and use `buildx`.
 ```sh
 export DOCKER_CLI_EXPERIMENTAL=enabled
 docker buildx create --use --name build --node build --driver-opt network=host
-docker buildx build --platform linux/arm/v7 -t <your-repo>/dht22-mqtt .
+docker buildx build --platform linux/arm/v7 -t <your-repo>/dht22-mqtt --push .
 ```
-
