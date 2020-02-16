@@ -39,7 +39,7 @@ Install Python requirements:
 pip3 install --no-cache-dir -r requirements.txt
 ```
 
-Configure through environment variables:
+Configure through environment variables (those are default values if nothing given):
 
 ```sh
 # Which Raspberry GPIO pin to use
@@ -53,7 +53,7 @@ export MQTT_SERVICE_HOST=mosquitto.local
 export MQTT_SERVICE_PORT=1883
 # MQTT broker topic to publish measures
 export MQTT_SERVICE_TOPIC=home/livingroom
-# MQTT client ID
+# MQTT client ID (default will be the hostname)
 export MQTT_CLIENT_ID=dht22-mqtt-service
 ```
 
@@ -79,25 +79,28 @@ You should see output printed:
 
 An image is available on Docker Hub: [rsaikali/dht22-mqtt](https://hub.docker.com/r/rsaikali/dht22-mqtt)
 
-```sh
-docker pull rsaikali/dht22-mqtt
-```
-
 Needed environment is obviously the same as the standalone script mechanism, described in the Dockerfile:
 
-```sh
-ENV DHT22_PIN 4
-ENV DHT22_CHECK_EVERY 10
+Please note that you'll need to use `--privileged` when runnong docker to have access to GPIO.
 
-ENV MQTT_SERVICE_HOST mosquitto.local
-ENV MQTT_SERVICE_PORT 1883
-ENV MQTT_SERVICE_TOPIC home/livingroom
-ENV MQTT_CLIENT_ID dht22-mqtt-service
+```sh
+docker run --name dht22-mqtt \
+        --privileged \
+        --restart=always \
+        --net=host \
+        -tid \
+        -e DHT22_PIN=4 \
+        -e DHT22_CHECK_EVERY=10 \
+        -e MQTT_SERVICE_HOST=mosquitto.local \
+        -e MQTT_SERVICE_PORT=1883 \
+        -e MQTT_SERVICE_TOPIC=home/livingroom \
+        -e MQTT_CLIENT_ID=dht22-mqtt-service \
+        rsaikali/dht22-mqtt
 ```
 
 #### Build your own Docker image
 
-To build an `arm` docker image from another architecture, you'll need a special Docker multi-architecture build functionality detailled [here](https://community.arm.com/developer/tools-software/tools/b/tools-software-ides-blog/posts/getting-started-with-docker-for-arm-on-linux).
+To build an `linux/arm/v7` docker image from another architecture, you'll need a special (experimental) Docker multi-architecture build functionality detailled here: [Building Multi-Arch Images for Arm and x86 with Docker Desktop](https://www.docker.com/blog/multi-arch-images/)
 
 You'll basically need to activate experimental features and use `buildx`.
 

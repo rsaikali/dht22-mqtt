@@ -13,7 +13,7 @@ DHT22_CHECK_EVERY = int(os.getenv('DHT22_CHECK_EVERY', 10))
 MQTT_SERVICE_HOST = os.getenv('MQTT_SERVICE_HOST', 'mosquitto.local')
 MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
-MQTT_CLIENT_ID = os.getenv('HOSTNAME', 'dht22-mqtt')
+MQTT_CLIENT_ID = os.getenv('HOSTNAME', 'dht22-mqtt-service')
 
 
 if __name__ == "__main__":
