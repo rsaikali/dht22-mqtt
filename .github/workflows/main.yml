@@ -6,10 +6,11 @@ jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
-      - name: Build and publish changed multi platform Docker images
-        uses: dawidd6/action-docker-publish-changed@v2.0.2
+      - name: Customizable Docker Buildx
+        uses: ilteoood/docker_buildx@v1.0.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          docker_username: ${{ secrets.DOCKER_HUB_LOGIN }}
-          docker_password: '${{ secrets.DOCKER_HUB_PASSWORD }}'
-          platforms: linux/arm/v7
+          imageName: rsaikali/dht22-mqtt
+          publish: true
+          platform: linux/arm/v7
+          dockerHubUser: ${{ secrets.DOCKER_HUB_LOGIN }}
+          dockerHubPassword: '${{ secrets.DOCKER_HUB_PASSWORD }}'
