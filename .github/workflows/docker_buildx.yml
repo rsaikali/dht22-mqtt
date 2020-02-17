@@ -17,7 +17,7 @@ jobs:
         uses: ilteoood/docker_buildx@master
         with:
           imageName: rsaikali/dht22-mqtt
-          platform: linux/arm/v7
+          platform: linux/arm/v6,linux/arm/v7
           dockerHubUser: ${{ secrets.DOCKER_HUB_LOGIN }}
           dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
           publish: true
