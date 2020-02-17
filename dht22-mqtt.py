@@ -28,6 +28,8 @@ if __name__ == "__main__":
     logger.info(f"{MQTT_SERVICE_TOPIC=}")
     logger.info(f"{MQTT_CLIENT_ID=}")
     logger.info("-" * 80)
+    logger.info(f"Waiting a few seconds before initializing DHT22 on pin {DHT22_PIN}...")
+    time.sleep(10)
 
     # Initializes DHT22 on given GPIO pin
     dht22_sensor = adafruit_dht.DHT22(DHT22_PIN)
