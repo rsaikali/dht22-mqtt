@@ -2,3 +2,4 @@ RPi.GPIO
 adafruit-circuitpython-dht
 paho-mqtt
 coloredlogger
+psutil

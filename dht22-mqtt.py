@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import time
+import psutil
 import traceback
 import adafruit_dht
 import paho.mqtt.publish as publish
@@ -15,10 +16,17 @@ MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
 MQTT_CLIENT_ID = os.getenv('HOSTNAME', 'dht22-mqtt-service')
 
+logger = coloredlogger.ColoredLogger(name=MQTT_CLIENT_ID)
+
+
+def kill_libgpiod_pulsei():
+    for proc in psutil.process_iter():
+        if proc.name() == "libgpiod_pulsein":
+            logger.success('Killing ' + proc.name())
+            proc.kill()
+
 
 if __name__ == "__main__":
-
-    logger = coloredlogger.ColoredLogger(name=MQTT_CLIENT_ID)
 
     # Display config on startup
     logger.info(f"{DHT22_PIN=}")
@@ -31,20 +39,25 @@ if __name__ == "__main__":
     logger.info(f"Waiting a few seconds before initializing DHT22 on pin {DHT22_PIN}...")
     time.sleep(10)
 
-    # Initializes DHT22 on given GPIO pin
-    dht22_sensor = adafruit_dht.DHT22(DHT22_PIN)
-
     while True:
 
-        # Read temperature and humidity
         try:
-            # 100% CPU use of libgpiod_pulsein on Raspberry Pi
-            # https://github.com/adafruit/Adafruit_Blinka/issues/210
+            # Initializes DHT22 on given GPIO pin
+            dht22_sensor = adafruit_dht.DHT22(DHT22_PIN)
+
+            # Read from sensor
             temperature = dht22_sensor.temperature
             humidity = dht22_sensor.humidity
+
+            # 100% CPU use of libgpiod_pulsein on Raspberry Pi
+            # https://github.com/adafruit/Adafruit_Blinka/issues/210
+            kill_libgpiod_pulsei()
+
         except RuntimeError as e:
+            kill_libgpiod_pulsei()
             logger.error("An error occured while getting DHT22 measure")
             logger.error(str(e))
+
             # Measure is wrong just after an error, need to wait a few seconds...
             # https://github.com/adafruit/Adafruit_CircuitPython_DHT/pull/31
             # https://github.com/adafruit/Adafruit_Blinka/issues/210#issuecomment-578470762
