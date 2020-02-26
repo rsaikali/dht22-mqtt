@@ -2,4 +2,5 @@
 .gitignore
 .github
 .dockerignore
+.DS_Store
 Dockerfile
