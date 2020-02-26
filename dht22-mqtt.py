@@ -22,7 +22,6 @@ logger = coloredlogger.ColoredLogger(name=MQTT_CLIENT_ID)
 def kill_libgpiod_pulsei():
     for proc in psutil.process_iter():
         if proc.name() == "libgpiod_pulsein":
-            logger.success('Killing ' + proc.name())
             proc.kill()
 
 
@@ -55,13 +54,11 @@ if __name__ == "__main__":
 
         except RuntimeError as e:
             kill_libgpiod_pulsei()
-            logger.error("An error occured while getting DHT22 measure")
             logger.error(str(e))
-
-            # Measure is wrong just after an error, need to wait a few seconds...
+            # Measure is wrong just after an error
             # https://github.com/adafruit/Adafruit_CircuitPython_DHT/pull/31
             # https://github.com/adafruit/Adafruit_Blinka/issues/210#issuecomment-578470762
-            time.sleep(10)
+            time.sleep(DHT22_CHECK_EVERY)
             continue
 
         # Prepare messages to be published on MQTT
