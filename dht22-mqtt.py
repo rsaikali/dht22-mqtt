@@ -5,7 +5,9 @@ import psutil
 import traceback
 import adafruit_dht
 import paho.mqtt.publish as publish
-import coloredlogger
+
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 # Config from environment (see Dockerfile)
@@ -16,7 +18,7 @@ MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
 MQTT_CLIENT_ID = os.getenv('HOSTNAME', 'dht22-mqtt-service')
 
-logger = coloredlogger.ColoredLogger(name=MQTT_CLIENT_ID)
+logger = logging.getLogger(MQTT_CLIENT_ID)
 
 
 def kill_libgpiod_pulsei():
@@ -28,13 +30,13 @@ def kill_libgpiod_pulsei():
 if __name__ == "__main__":
 
     # Display config on startup
-    logger.info(f"{DHT22_PIN=}")
-    logger.info(f"{DHT22_CHECK_EVERY=}")
-    logger.info(f"{MQTT_SERVICE_HOST=}")
-    logger.info(f"{MQTT_SERVICE_PORT=}")
-    logger.info(f"{MQTT_SERVICE_TOPIC=}")
-    logger.info(f"{MQTT_CLIENT_ID=}")
-    logger.info("-" * 80)
+    logger.debug(f"{DHT22_PIN=}")
+    logger.debug(f"{DHT22_CHECK_EVERY=}")
+    logger.debug(f"{MQTT_SERVICE_HOST=}")
+    logger.debug(f"{MQTT_SERVICE_PORT=}")
+    logger.debug(f"{MQTT_SERVICE_TOPIC=}")
+    logger.debug(f"{MQTT_CLIENT_ID=}")
+    logger.debug("-" * 80)
     logger.info(f"Waiting a few seconds before initializing DHT22 on pin {DHT22_PIN}...")
     time.sleep(10)
 
@@ -51,9 +53,10 @@ if __name__ == "__main__":
             # 100% CPU use of libgpiod_pulsein on Raspberry Pi
             # https://github.com/adafruit/Adafruit_Blinka/issues/210
             kill_libgpiod_pulsei()
-
+            del dht22_sensor
         except RuntimeError as e:
             kill_libgpiod_pulsei()
+            del dht22_sensor
             logger.error(str(e))
             # Measure is wrong just after an error
             # https://github.com/adafruit/Adafruit_CircuitPython_DHT/pull/31
@@ -62,8 +65,8 @@ if __name__ == "__main__":
             continue
 
         # Prepare messages to be published on MQTT
-        logger.success(f"[{MQTT_SERVICE_TOPIC}/temperature] --- {temperature}°C ---> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
-        logger.success(f"[{MQTT_SERVICE_TOPIC}/humidity] ------ {humidity}% ----> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
+        logger.info(f"[{MQTT_SERVICE_TOPIC}/temperature] --- {temperature}°C ---> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
+        logger.info(f"[{MQTT_SERVICE_TOPIC}/humidity] ------ {humidity}% ----> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
 
         msgs = [
             {
