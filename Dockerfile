@@ -12,10 +12,12 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y libgpiod2 gcc build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+WORKDIR /opt
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY requirements.txt /opt/requirements.txt
 
-COPY dht22-mqtt.py .
+RUN pip3 install --no-cache-dir -r /opt/requirements.txt
 
-ENTRYPOINT ["python", "./dht22-mqtt.py"]
+COPY dht22-mqtt.py /opt/dht22-mqtt.py
+
+ENTRYPOINT ["python", "/opt/dht22-mqtt.py"]
