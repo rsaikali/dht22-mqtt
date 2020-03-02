@@ -2,12 +2,11 @@
 import os
 import time
 import psutil
-import traceback
 import adafruit_dht
 import paho.mqtt.publish as publish
 
 import logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s] %(levelname)8s %(message)s')
 
 
 # Config from environment (see Dockerfile)
@@ -30,15 +29,16 @@ def kill_libgpiod_pulsei():
 if __name__ == "__main__":
 
     # Display config on startup
-    logger.debug(f"{DHT22_PIN=}")
-    logger.debug(f"{DHT22_CHECK_EVERY=}")
-    logger.debug(f"{MQTT_SERVICE_HOST=}")
-    logger.debug(f"{MQTT_SERVICE_PORT=}")
-    logger.debug(f"{MQTT_SERVICE_TOPIC=}")
-    logger.debug(f"{MQTT_CLIENT_ID=}")
-    logger.debug("-" * 80)
+    logger.debug("#" * 80)
+    logger.debug(f"# {DHT22_PIN=}")
+    logger.debug(f"# {DHT22_CHECK_EVERY=}")
+    logger.debug(f"# {MQTT_SERVICE_HOST=}")
+    logger.debug(f"# {MQTT_SERVICE_PORT=}")
+    logger.debug(f"# {MQTT_SERVICE_TOPIC=}")
+    logger.debug(f"# {MQTT_CLIENT_ID=}")
+    logger.debug("#" * 80)
     logger.info(f"Waiting a few seconds before initializing DHT22 on pin {DHT22_PIN}...")
-    time.sleep(10)
+    time.sleep(DHT22_CHECK_EVERY)
 
     while True:
 
@@ -83,8 +83,7 @@ if __name__ == "__main__":
             # Publish messages on given MQTT broker
             publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID)
         except Exception:
-            logger.error("An error occured publishing values to MQTT")
-            logger.error(traceback.format_exc())
+            logger.error("An error occured publishing values to MQTT", exc_info=True)
 
         # Sleep a little
         time.sleep(DHT22_CHECK_EVERY)
