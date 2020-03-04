@@ -3,4 +3,5 @@
 .github
 .dockerignore
 .DS_Store
+.vscode
 Dockerfile
