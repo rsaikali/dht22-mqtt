@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+import logging
 import os
 import time
-import psutil
+from pathlib import Path
+
 import adafruit_dht
 import paho.mqtt.publish as publish
+import psutil
 
-import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s] %(levelname)8s %(message)s')
 
 
@@ -41,6 +43,8 @@ if __name__ == "__main__":
             # Read from sensor
             temperature = dht22_sensor.temperature
             humidity = dht22_sensor.humidity
+            # Touch file every time data is read (used for liveness probe in k8s)
+            Path('.dht22_updated').touch()
         except RuntimeError as e:
             logger.error(str(e))
             time.sleep(5)
