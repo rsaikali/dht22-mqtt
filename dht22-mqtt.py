@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import logging
 import os
 import time
@@ -6,7 +5,6 @@ from pathlib import Path
 
 import adafruit_dht
 import paho.mqtt.publish as publish
-import psutil
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(name)s] %(levelname)8s %(message)s')
 
