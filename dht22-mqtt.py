@@ -51,10 +51,8 @@ if __name__ == "__main__":
 
         try:
             # Prepare messages to be published on MQTT
-            msgs = [{'topic': f"{MQTT_SERVICE_TOPIC}/temperature",
-                     'payload': str(temperature)},
-                    {'topic': f"{MQTT_SERVICE_TOPIC}/humidity",
-                     'payload': str(humidity)}]
+            msgs = [(f"{MQTT_SERVICE_TOPIC}/temperature", str(temperature)),
+                    (f"{MQTT_SERVICE_TOPIC}/humidity", str(humidity))]
 
             # Publish messages on given MQTT broker
             publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID)
