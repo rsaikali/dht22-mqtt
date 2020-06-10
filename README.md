@@ -58,11 +58,18 @@ export DHT22_CHECK_EVERY=10
 export MQTT_SERVICE_HOST=mosquitto.local
 # MQTT broker port
 export MQTT_SERVICE_PORT=1883
+# MQTT broker user - optional
+export MQTT_SERVICE_USER=mqtt_user
+# MQTT broker password - optional
+export MQTT_SERVICE_PASSWORD=very_strong_password
+ 
 # MQTT broker topic to publish measures
 export MQTT_SERVICE_TOPIC=home/livingroom
 # MQTT client ID (default will be the hostname)
 export MQTT_CLIENT_ID=dht22-mqtt-service
 ```
+
+If you do not set user and password environment variables, auth is not used. 
 
 Launch application:
 
@@ -100,6 +107,8 @@ docker run --name dht22-mqtt \
            -e DHT22_CHECK_EVERY=10 \
            -e MQTT_SERVICE_HOST=mosquitto.local \
            -e MQTT_SERVICE_PORT=1883 \
+           -e MQTT_SERVICE_USER=mqtt_user \
+           -e MQTT_SERVICE_PASSWORD=very_strong_password \           
            -e MQTT_SERVICE_TOPIC=home/livingroom \
            -e MQTT_CLIENT_ID=dht22-mqtt-service \
            rsaikali/dht22-mqtt

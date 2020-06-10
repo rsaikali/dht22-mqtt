@@ -14,8 +14,10 @@ DHT22_PIN = int(os.getenv('DHT22_PIN', '4'))
 DHT22_CHECK_EVERY = int(os.getenv('DHT22_CHECK_EVERY', 1))
 MQTT_SERVICE_HOST = os.getenv('MQTT_SERVICE_HOST', 'mosquitto.local')
 MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
+MQTT_SERVICE_USER = os.getenv('MQTT_SERVICE_USER', None)
+MQTT_SERVICE_PASSWORD = os.getenv('MQTT_SERVICE_PASSWORD', None)
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
-MQTT_CLIENT_ID = os.getenv('HOSTNAME', 'dht22-mqtt-service')
+MQTT_CLIENT_ID = os.getenv('MQTT_CLIENT_ID', os.getenv('HOSTNAME'))
 
 logger = logging.getLogger(MQTT_CLIENT_ID)
 
@@ -28,9 +30,17 @@ if __name__ == "__main__":
     logger.debug(f"# {DHT22_CHECK_EVERY=}")
     logger.debug(f"# {MQTT_SERVICE_HOST=}")
     logger.debug(f"# {MQTT_SERVICE_PORT=}")
+    logger.debug(f"# {MQTT_SERVICE_USER=}")
+    logger.debug(f"# {MQTT_SERVICE_PASSWORD=}")
     logger.debug(f"# {MQTT_SERVICE_TOPIC=}")
     logger.debug(f"# {MQTT_CLIENT_ID=}")
     logger.debug("#" * 80)
+
+    MQTT_SERVICE_AUTH = None
+
+    if MQTT_SERVICE_USER != None:
+        MQTT_SERVICE_AUTH = {'username':MQTT_SERVICE_USER, 'password':MQTT_SERVICE_PASSWORD}
+
 
     # Initializes DHT22 on given GPIO pin
     dht22_sensor = adafruit_dht.DHT22(DHT22_PIN)
@@ -57,7 +67,7 @@ if __name__ == "__main__":
                     (f"{MQTT_SERVICE_TOPIC}/humidity", str(humidity))]
 
             # Publish messages on given MQTT broker
-            publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID)
+            publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID, auth=MQTT_SERVICE_AUTH)
         except Exception:
             logger.error("An error occured publishing values to MQTT", exc_info=True)
 
