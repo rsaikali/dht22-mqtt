@@ -14,8 +14,8 @@ DHT22_PIN = int(os.getenv('DHT22_PIN', '4'))
 DHT22_CHECK_EVERY = int(os.getenv('DHT22_CHECK_EVERY', 1))
 MQTT_SERVICE_HOST = os.getenv('MQTT_SERVICE_HOST', 'mosquitto.local')
 MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
-MQTT_SERVICE_USER = os.getenv('MQTT_SERVICE_USER', 'None')
-MQTT_SERVICE_PASSWORD = os.getenv('MQTT_SERVICE_PASSWORD', 'None')
+MQTT_SERVICE_USER = os.getenv('MQTT_SERVICE_USER', None)
+MQTT_SERVICE_PASSWORD = os.getenv('MQTT_SERVICE_PASSWORD', None)
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
 MQTT_CLIENT_ID = os.getenv('MQTT_CLIENT_ID', 'dht22-mqtt-service')
 
@@ -36,9 +36,9 @@ if __name__ == "__main__":
     logger.debug(f"# {MQTT_CLIENT_ID=}")
     logger.debug("#" * 80)
 
-    MQTT_SERVICE_AUTH = "None"
+    MQTT_SERVICE_AUTH = None
 
-    if MQTT_SERVICE_USER != 'None':
+    if MQTT_SERVICE_USER != None:
         MQTT_SERVICE_AUTH = {'username':MQTT_SERVICE_USER, 'password':MQTT_SERVICE_PASSWORD}
 
 
