@@ -17,7 +17,7 @@ MQTT_SERVICE_PORT = int(os.getenv('MQTT_SERVICE_PORT', 1883))
 MQTT_SERVICE_USER = os.getenv('MQTT_SERVICE_USER', None)
 MQTT_SERVICE_PASSWORD = os.getenv('MQTT_SERVICE_PASSWORD', None)
 MQTT_SERVICE_TOPIC = os.getenv('MQTT_SERVICE_TOPIC', 'home/livingroom')
-MQTT_CLIENT_ID = os.getenv('MQTT_CLIENT_ID', 'dht22-mqtt-service')
+MQTT_CLIENT_ID = os.getenv('MQTT_CLIENT_ID', os.getenv('HOSTNAME'))
 
 logger = logging.getLogger(MQTT_CLIENT_ID)
 
