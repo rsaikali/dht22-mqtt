@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     MQTT_SERVICE_AUTH = None
 
-    if MQTT_SERVICE_USER != None:
+    if MQTT_SERVICE_USER is not None:
         MQTT_SERVICE_AUTH = {'username':MQTT_SERVICE_USER, 'password':MQTT_SERVICE_PASSWORD}
 
 
@@ -57,6 +57,9 @@ if __name__ == "__main__":
             logger.error(str(e))
             time.sleep(5)
             continue
+            
+        if temperature is None or humidity is None:
+            continue
 
         logger.info(f"[{MQTT_SERVICE_TOPIC}/temperature] --- {temperature}°C ---> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
         logger.info(f"[{MQTT_SERVICE_TOPIC}/humidity] ------ {humidity}% ----> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
@@ -69,7 +72,7 @@ if __name__ == "__main__":
             # Publish messages on given MQTT broker
             publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID, auth=MQTT_SERVICE_AUTH)
         except Exception:
-            logger.error("An error occured publishing values to MQTT", exc_info=True)
+            logger.error("An error occurred publishing values to MQTT", exc_info=True)
 
         # Sleep a little
         time.sleep(DHT22_CHECK_EVERY)
