@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     MQTT_SERVICE_AUTH = None
 
-    if MQTT_SERVICE_USER != None:
+    if MQTT_SERVICE_USER is not None:
         MQTT_SERVICE_AUTH = {'username':MQTT_SERVICE_USER, 'password':MQTT_SERVICE_PASSWORD}
 
 
@@ -56,6 +56,9 @@ if __name__ == "__main__":
         except RuntimeError as e:
             logger.error(str(e))
             time.sleep(5)
+            continue
+            
+        if temperature is None or humidity is None:
             continue
 
         logger.info(f"[{MQTT_SERVICE_TOPIC}/temperature] --- {temperature}°C ---> [{MQTT_SERVICE_HOST}:{MQTT_SERVICE_PORT}]")
