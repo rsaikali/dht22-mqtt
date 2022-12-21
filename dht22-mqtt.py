@@ -72,7 +72,7 @@ if __name__ == "__main__":
             # Publish messages on given MQTT broker
             publish.multiple(msgs, hostname=MQTT_SERVICE_HOST, port=MQTT_SERVICE_PORT, client_id=MQTT_CLIENT_ID, auth=MQTT_SERVICE_AUTH)
         except Exception:
-            logger.error("An error occured publishing values to MQTT", exc_info=True)
+            logger.error("An error occurred publishing values to MQTT", exc_info=True)
 
         # Sleep a little
         time.sleep(DHT22_CHECK_EVERY)
